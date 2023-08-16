@@ -71,7 +71,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await gmail.sendMail({
       from: `UniNex <${process.env.EMAIL_ADDRESS}>`,
       to: user.email,
-      subject: 'Account Verification Token',
+      subject: 'Please Verify your UniNex account',
       html: `<p>Hello ${user.displayName},</p><p>Thank you for your interest in joining UniNex.</p><p>Please <a href="${verificationLink}">click here</a> or open the following link in your browser to verify your account:</p><p style="font-weight:bold;"><a href="${verificationLink}">${verificationLink}</a></p><p>This link will expire in 5 minutes.</p><p>If you did not request this, please ignore this email.</p>`,
     });
 
