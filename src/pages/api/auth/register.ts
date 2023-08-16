@@ -1,5 +1,3 @@
-import { sign } from 'jsonwebtoken';
-
 import { NextApiRequest, NextApiResponse } from 'next';
 // utils
 import cors from 'src/utils/cors';
@@ -7,6 +5,7 @@ import cors from 'src/utils/cors';
 import { _users, JWT_SECRET, JWT_EXPIRES_IN } from 'src/_mock/_auth';
 // database
 import db from 'src/utils/db';
+import gmail from 'src/utils/gmail';
 
 // ----------------------------------------------------------------------
 
@@ -67,14 +66,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     await db.user.create(user);
 
-    const accessToken = sign({ userId: _users[0].id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN,
+    await gmail.sendMail({
+      from: process.env.EMAIL_ADDRESS,
+      to: email,
+      subject: 'Account Verification Token',
+      html: `<p>Hello ${user.displayName},</p><p>Thank you for registering on our site.</p><p>Please use the following token to verify your account:</p><p style="font-size:2em; font-weight:bold;">${user.token}</p><p>This token will expire in 5 minutes.</p><p>If you did not request this, please ignore this email.</p>`,
     });
 
-    res.status(200).json({
-      accessToken,
-      user,
-    });
+    res.status(200);
   } catch (error) {
     console.error('[Auth API]: ', error);
     res.status(500).json({
