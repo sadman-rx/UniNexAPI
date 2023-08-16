@@ -22,6 +22,18 @@ function hideEmailMiddle(email: string): string {
   return email;
 }
 
+function generateRandomToken(length: number): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let token = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    token += characters.charAt(randomIndex);
+  }
+
+  return token;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await cors(req, res);
@@ -60,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       about: null,
       roleId,
       isAdmin: true,
-      token: [...Array(32)].map(() => Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substr(0, 1)).join(''),
+      token: generateRandomToken(32),
       tokenExpiry: new Date(Date.now() + 5 * 60 * 1000),
     };
 
