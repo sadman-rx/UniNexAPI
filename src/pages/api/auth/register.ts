@@ -71,8 +71,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await gmail.sendMail({
       from: `UniNex <${process.env.EMAIL_ADDRESS}>`,
       to: user.email,
-      subject: 'Please Verify your UniNex account',
-      html: `<p>Hello ${user.displayName},</p><p>Thank you for your interest in joining UniNex.</p><p>Please <a href="${verificationLink}">click here</a> or open the following link in your browser to verify your account:</p><p style="font-weight:bold;"><a href="${verificationLink}">${verificationLink}</a></p><p>This link will expire in 5 minutes.</p><p>If you did not request this, please ignore this email.</p>`,
+      subject: 'Please verify your UniNex account',
+      html: `<p>Dear ${user.displayName},</p>
+      <p>Thank you for showing your internest in joining UniNex! To ensure the security of your account and complete the registration process, we need to verify your email address.</p>
+      <p>Please click on the following link to verify your account:</p>
+      <a href="${verificationLink}" style="padding: 5px 10px; background: #fda92d; color: #161C24; font-size: 1.5em; font-weight: bold; text-decoration: none; border-radius: 0.25em;">Verify Account</a>
+      <p>If the link above does not work, you can copy and paste the URL into your browser's address bar: ${verificationLink}</p>
+      <p>Please note that this link is valid for the next 5 minutes. After that, you may need to request a new verification link.</p>
+      <p>If you did not create an account with UniNex, please ignore this email.</p>
+      <p>If you have any questions or need assistance, please don't hesitate to contact our support team at <a href="mailto:sadmanhossainwork@gmail.com">sadmanhossainwork@gmail.com</a>.</p>
+      <p>Thank you for choosing UniNex. We look forward to providing you with a great experience!</p>
+      <p>Best regards,<br>The UniNex Team</p>`,
     });
 
     res.status(200).end();
