@@ -18,18 +18,9 @@ const initMiddleware = (middleware: Middleware) => (req: NextApiRequest, res: Ne
 
 // ----------------------------------------------------------------------
 
-// Allow only http://localhost:3034
-const allowedOrigins = [process.env.APP_URL];
-
+// You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
 const cors = initMiddleware(
   Cors({
-    origin: (origin, callback) => {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   })
 );
