@@ -60,20 +60,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       about: null,
       roleId,
       isAdmin: true,
-      token: Math.random().toString(36).substr(2),
+      token: [...Array(32)].map(() => Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substr(0, 1)).join(''),
       tokenExpiry: new Date(Date.now() + 5 * 60 * 1000),
     };
 
     await db.user.create(user);
 
+    const verificationLink = `${process.env.NODE_ENV === 'development' ? process.env.DEV_API : process.env.PRODUCTION_API}/api/auth/verify?token=${user.token}`;
+
     await gmail.sendMail({
-      from: process.env.EMAIL_ADDRESS,
-      to: email,
+      from: `UniNex <${process.env.EMAIL_ADDRESS}>`,
+      to: user.email,
       subject: 'Account Verification Token',
-      html: `<p>Hello ${user.displayName},</p><p>Thank you for registering on our site.</p><p>Please use the following token to verify your account:</p><p style="font-size:2em; font-weight:bold;">${user.token}</p><p>This token will expire in 5 minutes.</p><p>If you did not request this, please ignore this email.</p>`,
+      html: `<p>Hello ${user.displayName},</p><p>Thank you for your interest in joining UniNex.</p><p>Please <a href="${verificationLink}">click here</a> or open the following link in your browser to verify your account:</p><p style="font-weight:bold;"><a href="${verificationLink}">${verificationLink}</a></p><p>This link will expire in 5 minutes.</p><p>If you did not request this, please ignore this email.</p>`,
     });
 
-    res.status(200);
+    res.status(200).end();
   } catch (error) {
     console.error('[Auth API]: ', error);
     res.status(500).json({
