@@ -20,6 +20,7 @@ interface UserAttributes {
   isApproved: boolean;
   token: string | null;
   tokenExpiry: Date | null;
+  callbackUrl: string | null;
 }
 
 interface UserModel extends Model<UserAttributes>, UserAttributes {}
@@ -95,6 +96,10 @@ const defineUser = (sequelize: Sequelize) => {
     },
     tokenExpiry: {
       type: DataTypes.DATE,
+      allowNull: true,
+    },
+    callbackUrl: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
   });

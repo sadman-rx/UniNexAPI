@@ -25,14 +25,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     await db.user.update({ isVerified: true }, { where: { token } });
-    
+
     res.status(200).send(`
       <html>
-      <head>
-        <meta http-equiv="refresh" content="5;url=https://localhost:3034">
-      </head>
+      ${user.callbackUrl && 
+      `<head>
+        <meta http-equiv="refresh" content="5;url=${process.env.APP_URL}${user.callbackUrl}">
+      </head>`
+      }
       <body>
-        <p>Account verified successfully! Redirecting in 5 seconds...</p>
+        <p>Account verified successfully! ${user.callbackUrl && `Redirecting in 5 seconds...`}</p>
       </body>
       </html>
     `);
