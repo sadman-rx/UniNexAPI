@@ -28,13 +28,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).send(`
       <html>
-      ${user.callbackUrl && 
+      ${user.callbackUrl ? 
       `<head>
         <meta http-equiv="refresh" content="5;url=${process.env.APP_URL}${user.callbackUrl}">
-      </head>`
+      </head>` : ""
       }
       <body>
-        <p>Account verified successfully! ${user.callbackUrl && `Redirecting in 5 seconds...`}</p>
+        <p>Account verified successfully! ${user.callbackUrl ? `Redirecting in 5 seconds...` : ""}</p>
       </body>
       </html>
     `);

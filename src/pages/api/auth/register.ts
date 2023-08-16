@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await cors(req, res);
 
-    const { roleId, id, email, password, firstName, lastName, callback: callbackUrl } = req.body;
+    const { roleId, id, email, password, firstName, lastName, callbackUrl } = req.body;
 
     const existUserWithEmail = await db.user.findOne({ where: { email }});
     const existUserWithId = await db.user.findOne({ where: { id } });
