@@ -75,7 +75,7 @@ const defineUser = (sequelize: Sequelize) => {
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
     },
     isBanned: {
       type: DataTypes.BOOLEAN,
