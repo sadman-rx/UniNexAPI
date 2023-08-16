@@ -1,4 +1,5 @@
 // @mui
+import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
@@ -7,6 +8,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 // config
 import { HOST_API } from '../config-global';
+import { Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +31,16 @@ export default function IndexPage() {
     </Stack>
   );
 
+  const renderDatabase = (
+    <Stack spacing={1}>
+      <Typography variant="h6" sx={{ fontWeight: 'fontWeightBold' }}>
+        Database
+      </Typography>
+
+      <Block method="GET" description="Sync" path="/api/sync" />
+    </Stack>
+  );
+
   const renderAuth = (
     <Stack spacing={1}>
       <Typography variant="h6" sx={{ fontWeight: 'fontWeightBold' }}>
@@ -38,6 +50,16 @@ export default function IndexPage() {
       <Block method="GET" description="Get user info after login" path="/api/auth/me" />
       <Block method="POST" description="Login" path="/api/auth/login" />
       <Block method="POST" description="Register" path="/api/auth/register" />
+    </Stack>
+  );
+
+  const renderRole = (
+    <Stack spacing={1}>
+      <Typography variant="h6" sx={{ fontWeight: 'fontWeightBold' }}>
+        Role
+      </Typography>
+
+      <Block method="GET" description="Get all roles" path="/api/role/list" />
     </Stack>
   );
 
@@ -305,7 +327,11 @@ export default function IndexPage() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
+        {renderDatabase}
+
         {renderAuth}
+
+        {renderRole}
 
         {/* {renderBlog}
 
@@ -368,6 +394,18 @@ function Block({ method, path, description }: BlockProps) {
     </Box>
   );
 
+  const renderAction = (
+    <Button
+      size="small"
+      variant="contained"
+      component={Link}
+      target="_blank"
+      href={`${HOST_API}${path}`}
+    >
+      Open Link
+    </Button>
+  );
+
   return (
     <Stack
       component={Paper}
@@ -385,6 +423,12 @@ function Block({ method, path, description }: BlockProps) {
         {renderMethod}
 
         {renderPath}
+
+        {
+          method === 'GET' && (
+            renderAction
+          )
+        }
       </Stack>
     </Stack>
   );
