@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await cors(req, res);
 
-    const { roleId, id, email, password, firstName, lastName, callbackUrl } = req.body;
+    const { roleId, id, email, password, firstName, lastName } = req.body;
 
     const existUserWithEmail = await db.user.findOne({ where: { email }});
     const existUserWithId = await db.user.findOne({ where: { id } });
@@ -74,7 +74,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       isAdmin: true,
       token: generateRandomToken(32),
       tokenExpiry: new Date(Date.now() + 5 * 60 * 1000),
-      callbackUrl,
     };
 
     await db.user.create(user);

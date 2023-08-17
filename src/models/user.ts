@@ -17,10 +17,8 @@ interface UserAttributes {
   isAdmin: boolean;
   isBanned: boolean;
   isVerified: boolean; 
-  isApproved: boolean;
   token: string | null;
   tokenExpiry: Date | null;
-  callbackUrl: string | null;
 }
 
 interface UserModel extends Model<UserAttributes>, UserAttributes {}
@@ -86,20 +84,12 @@ const defineUser = (sequelize: Sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isApproved: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
     token: {
       type: DataTypes.STRING,
       allowNull: true,
     },
     tokenExpiry: {
       type: DataTypes.DATE,
-      allowNull: true,
-    },
-    callbackUrl: {
-      type: DataTypes.STRING,
       allowNull: true,
     },
   });
