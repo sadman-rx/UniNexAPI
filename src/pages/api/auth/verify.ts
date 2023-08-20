@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    await db.user.update({ isVerified: true }, { where: { token } });
+    await db.user.update({ isVerified: true, token: null, tokenExpiry: null }, { where: { token } });
 
     res.status(200).send(`
       <html> 

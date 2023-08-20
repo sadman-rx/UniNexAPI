@@ -3,10 +3,12 @@ import { verify } from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 // utils
 import cors from 'src/utils/cors';
-// _mock
-import { _users, JWT_SECRET } from 'src/_mock/_auth';
+// database
+import db from 'src/utils/db';
 
 // ----------------------------------------------------------------------
+
+export const JWT_SECRET = process.env.SECRET || "uninex";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -27,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const userId = typeof data === 'object' ? data?.userId : '';
 
-    const user = _users.find((user) => user.id === userId);
+    const user = await db.user.findOne({ where: { id: userId } });
 
     if (!user) {
       res.status(401).json({

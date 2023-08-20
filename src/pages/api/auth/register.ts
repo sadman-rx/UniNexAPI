@@ -71,7 +71,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       zipCode: null,
       about: null,
       roleId,
-      isAdmin: true,
       token: generateRandomToken(32),
       tokenExpiry: new Date(Date.now() + 5 * 60 * 1000),
     };
